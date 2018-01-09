@@ -11,8 +11,8 @@ public class GameScript : MonoBehaviour
     public float handHomingBaseDuration = 2f;
     public float spawnDistance = 9f;
     public Transform bowlTracking;
-
     public bool isGameOver = false;
+    public int handsSlapped = 0;
 
     void Start()
     {

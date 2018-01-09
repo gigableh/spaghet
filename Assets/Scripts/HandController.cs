@@ -80,8 +80,9 @@ public class HandController : MonoBehaviour
         deltaFromBowlTrackingOnGameOver = transform.position - bowlTracking.position;
     }
 
-    public void SelfDestruct()
+    public void SlapHand()
     {
         Destroy(gameObject);
+        ++gameScript.handsSlapped;
     }
 }

@@ -21,7 +21,7 @@ public class InputController : MonoBehaviour
                     var hc = hit.transform.GetComponent<HandController>();
                     if (hc != null)
                     {
-                        hc.SelfDestruct();
+                        hc.SlapHand();
                     }
                 }
             }
