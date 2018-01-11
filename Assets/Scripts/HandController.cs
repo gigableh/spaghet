@@ -5,19 +5,17 @@ using UnityEngine;
 public class HandController : MonoBehaviour
 {
     public Transform spaghetTarget;
-    public AnimationCurve curve;
-    public float duration = 10f;
     public GameScript gameScript;
     public Transform bowlTracking;
 
-    bool startTimeSet = false;
-    float startTime;
-
-    Vector3 startPosition;
+    public float enterSpeed = 0;
+    public float leaveSpeed = 0;
 
     bool isHandThatTouched = false;
     public Vector3 deltaFromBowlTrackingOnGameOver;
     Vector3 initialScale;
+
+    bool isHandLeaving = false;
 
     void Awake()
     {
@@ -30,8 +28,10 @@ public class HandController : MonoBehaviour
         {
             if (!isHandThatTouched)
             {
-                // If it's not the hand that touched the bowl, remove it.
-                Destroy(gameObject);
+                if (!isHandLeaving)
+                {
+                    StartCoroutine(HandLeaveSequence());
+                }
                 return;
             }
             else
@@ -41,25 +41,18 @@ public class HandController : MonoBehaviour
                 transform.localScale = initialScale * bowlTracking.localScale.x;
             }
         }
-        else if (spaghetTarget != null)
+        else if (spaghetTarget != null && !isHandLeaving)
         {
-            // Will start tracking time and position when the spaghet target is set.
-            if (!startTimeSet)
-            {
-                startTime = Time.time;
-                startPosition = transform.position;
-                startTimeSet = true;
-            }
-
-            float elapsedTime = Time.time - startTime;
-            float normElapsedTime = elapsedTime / duration;
-            float curveVal = curve.Evaluate(normElapsedTime);
-
-            Vector3 delta = spaghetTarget.position - transform.position;
-            Vector3 dir = delta.normalized;
-            transform.rotation = transform.rotation * Quaternion.FromToRotation(transform.right, dir);
+            // Update rotation.
+            //Vector3 delta = spaghetTarget.position - transform.position;
+            //Vector3 dir = delta.normalized;
+            //transform.rotation = transform.rotation * Quaternion.FromToRotation(transform.right, dir);
             //transform.position += dir * (speed * Time.deltaTime);
-            transform.position = Vector3.Lerp(startPosition, spaghetTarget.position, curveVal);
+
+            // Update position according to curve.
+            transform.position = transform.position + transform.right * (enterSpeed * Time.deltaTime);
+            // Note: rotation should already be set by GameScript so the +X axis should point
+            // toward the spaghet.
         }
     }
 
@@ -82,7 +75,42 @@ public class HandController : MonoBehaviour
 
     public void SlapHand()
     {
+        if (!isHandLeaving)
+        {
+            ++gameScript.handsSlapped;
+            StartCoroutine(HandLeaveSequence());
+        }
+    }
+
+    IEnumerator HandLeaveSequence()
+    {
+        isHandLeaving = true;
+        while (!IsHandOutsideOfCameraView())
+        {
+            transform.position = transform.position - transform.right * (leaveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
         Destroy(gameObject);
-        ++gameScript.handsSlapped;
+    }
+
+    bool IsHandOutsideOfCameraView()
+    {
+        // Don't count as outside right on the edge.
+        // the hand pivot is not at the tip of the hand.
+        float bufferUnits = 1f;
+
+        // Get necessary camera info.
+        Camera mainCam = Camera.main;
+        float camHalfSizeY = mainCam.orthographicSize;
+        float camHalfSizeX = camHalfSizeY * mainCam.aspect;
+        Vector3 camPos = mainCam.transform.position;
+
+        // Calculate the displacement from the camera to the hand.
+        Vector3 camToHandDisp = transform.position - camPos;
+
+        // Use the info to determine if hand is outside the camera's view.
+        return ( Mathf.Abs(camToHandDisp.y) > camHalfSizeY + bufferUnits ) ||
+            ( Mathf.Abs(camToHandDisp.x) > camHalfSizeX + bufferUnits );
     }
 }

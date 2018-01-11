@@ -537,80 +537,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handPrefab: {fileID: 1559078927445422, guid: 7dfd33a92ffd64641ba5c8bdf6bc1875, type: 2}
   videoPlayerController: {fileID: 2143818887}
-  curves:
-  - serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
   spaghetTarget: {fileID: 365973492}
-  handHomingBaseDuration: 2
-  spawnDistance: 9
   bowlTracking: {fileID: 1377745765}
   isGameOver: 0
+  handsSlapped: 0
+  handEnterSpeed: 3
+  handLeaveSpeed: 15
+  handSpawnDistance: 9
 --- !u!114 &1608543125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -953,7 +886,8 @@ AudioSource:
   m_GameObject: {fileID: 2143818883}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243232472712217296, guid: fdafcac0e6766a6499c3ed59da708509,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

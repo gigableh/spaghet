@@ -18,7 +18,7 @@ public class InputController : MonoBehaviour
                 var hit = Physics2D.Raycast(r.origin, r.direction);
                 if (hit != null && hit.transform != null)
                 {
-                    var hc = hit.transform.GetComponent<HandController>();
+                    var hc = hit.transform.GetComponentInParent<HandController>();
                     if (hc != null)
                     {
                         hc.SlapHand();
