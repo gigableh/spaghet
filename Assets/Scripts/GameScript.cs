@@ -17,17 +17,29 @@ public class GameScript : MonoBehaviour
     [Header("Hand Config")]
     public float handEnterSpeed = 15f;
     public float handLeaveSpeed = 5f;
-    public float handSpawnDistance = 9f; // Calculate this from camera size.
+
+    public float handSpawnDistancePad = 1f;
+    float handSpawnHalfDistance = 0f; // Calculate from camera size.
 
     void Start()
     {
+        CalculateHandSpawnDistance();
         StartCoroutine(SpawnRandomHandLoop());
+    }
+
+    void CalculateHandSpawnDistance()
+    {
+        Camera mainCam = Camera.main;
+        float yHalfSize = mainCam.orthographicSize;
+        float xHalfSize = yHalfSize * mainCam.aspect;
+        float diagonalHalfSize = Mathf.Sqrt(yHalfSize*yHalfSize + xHalfSize*xHalfSize);
+        handSpawnHalfDistance = diagonalHalfSize + handSpawnDistancePad;
     }
 
     void SpawnRandomHand()
     {
         var handGob = Instantiate(handPrefab, transform);
-        handGob.transform.position = (Quaternion.AngleAxis(Random.value * 359.9f, Vector3.forward) * Vector3.right) * handSpawnDistance;
+        handGob.transform.position = (Quaternion.AngleAxis(Random.value * 359.9f, Vector3.forward) * Vector3.right) * handSpawnHalfDistance;
 
         var hc = handGob.GetComponent<HandController>();
 
