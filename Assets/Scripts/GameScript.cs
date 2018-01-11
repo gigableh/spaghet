@@ -17,12 +17,16 @@ public class GameScript : MonoBehaviour
     [Header("Hand Config")]
     public float handEnterSpeed = 15f;
     public float handLeaveSpeed = 5f;
+    public float handSpeedIncreasePerSec = 1f;
+    public float handSpeedLimit = 25f;
+    float handEnterSpeedWithIncrease;
 
     public float handSpawnDistancePad = 1f;
     float handSpawnHalfDistance = 0f; // Calculate from camera size.
 
     void Start()
     {
+        handEnterSpeedWithIncrease = handEnterSpeed;
         CalculateHandSpawnDistance();
         StartCoroutine(SpawnRandomHandLoop());
     }
@@ -36,6 +40,19 @@ public class GameScript : MonoBehaviour
         handSpawnHalfDistance = diagonalHalfSize + handSpawnDistancePad;
     }
 
+    void Update()
+    {
+        handEnterSpeedWithIncrease = Mathf.Clamp(handEnterSpeedWithIncrease + Time.deltaTime * handSpeedIncreasePerSec, handEnterSpeed, handSpeedLimit);
+    }
+
+    IEnumerator SpawnRandomHandLoop()
+    {
+        if (isGameOver) yield break;
+        SpawnRandomHand();
+        yield return new WaitForSeconds(Random.value * 3.5f + 0.5f);
+        StartCoroutine(SpawnRandomHandLoop());
+    }
+
     void SpawnRandomHand()
     {
         var handGob = Instantiate(handPrefab, transform);
@@ -47,21 +64,13 @@ public class GameScript : MonoBehaviour
         hc.spaghetTarget = spaghetTarget;
         hc.gameScript = this;
         hc.bowlTracking = bowlTracking;
-        hc.enterSpeed = handEnterSpeed;
+        hc.enterSpeed = handEnterSpeedWithIncrease;
         hc.leaveSpeed = handLeaveSpeed;
 
         // Also update rotation before the next frame.
         hc.UpdateRotation();
     }
-
-    IEnumerator SpawnRandomHandLoop()
-    {
-        if (isGameOver) yield break;
-        SpawnRandomHand();
-        yield return new WaitForSeconds(Random.value * 3.5f + 0.5f);
-        StartCoroutine(SpawnRandomHandLoop());
-    }
-
+   
     public void ExecuteGameOverSequence()
     {
         Debug.Log("Game is over!");

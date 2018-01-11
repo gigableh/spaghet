@@ -543,6 +543,9 @@ MonoBehaviour:
   handsSlapped: 0
   handEnterSpeed: 3
   handLeaveSpeed: 15
+  handSpeedIncreasePerSec: 0.12
+  handSpeedLimit: 13.4
+  handEnterSpeedWithIncrease: 0
   handSpawnDistancePad: 4
 --- !u!114 &1608543125
 MonoBehaviour:
