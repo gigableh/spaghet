@@ -84,7 +84,6 @@ public class HandController : MonoBehaviour
         {
             ++gameScript.handsSlapped;
             float randomPitch = 1f + (Random.value - (1f - randomSlapPitchBias)) * handSlapSoundPitchMaxChange;
-            Debug.LogFormat("Random pitch: " + randomPitch);
             audioManager.PlayOneShot(slapSound, randomPitch);
             StartCoroutine(HandLeaveSequence());
         }

@@ -18,19 +18,23 @@ public class GoodAudioManager : MonoBehaviour
         }
     }
 
-    public void PlayOneShot(AudioClip clip)
+    public AudioSource PlayOneShot(AudioClip clip)
     {
-        audioSources[nextAudioSourceIndex].Stop();
-        audioSources[nextAudioSourceIndex].pitch = 1;
-        audioSources[nextAudioSourceIndex].PlayOneShot(clip);
+        AudioSource aus = audioSources[nextAudioSourceIndex];
+        aus.Stop();
+        aus.pitch = 1;
+        aus.PlayOneShot(clip);
         nextAudioSourceIndex = (nextAudioSourceIndex + 1) % audioSourceCount;
+        return aus;
     }
 
-    public void PlayOneShot(AudioClip clip, float pitch)
+    public AudioSource PlayOneShot(AudioClip clip, float pitch)
     {
-        audioSources[nextAudioSourceIndex].Stop();
-        audioSources[nextAudioSourceIndex].pitch = pitch;
-        audioSources[nextAudioSourceIndex].PlayOneShot(clip);
+        AudioSource aus = audioSources[nextAudioSourceIndex];
+        aus.Stop();
+        aus.pitch = pitch;
+        aus.PlayOneShot(clip);
         nextAudioSourceIndex = (nextAudioSourceIndex + 1) % audioSourceCount;
+        return aus;
     }
 }

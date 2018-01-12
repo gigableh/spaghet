@@ -21,6 +21,9 @@ public class GameScript : MonoBehaviour
     public float handSpawnsPerSecLimit = 5f;
     float handSpawnsPerSecWithIncrease;
 
+    [Header("General Audio")]
+    public AudioClip spaghetSquishSound;
+
     [Header("Hand Config")]
     public float handEnterSpeed = 15f;
     public float handLeaveSpeed = 5f;
@@ -116,6 +119,13 @@ public class GameScript : MonoBehaviour
     {
         Debug.Log("Game is over!");
         isGameOver = true;
+        StartCoroutine(GameOverSequence());
+    }
+
+    IEnumerator GameOverSequence()
+    {
+        AudioSource aus = audioManager.PlayOneShot(spaghetSquishSound);
+        while (aus.isPlaying) yield return null;
         videoPlayerController.Play();
     }
 }
