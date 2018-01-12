@@ -504,6 +504,7 @@ GameObject:
   - component: {fileID: 1608543123}
   - component: {fileID: 1608543124}
   - component: {fileID: 1608543125}
+  - component: {fileID: 1608543126}
   m_Layer: 0
   m_Name: Game Script
   m_TagString: Untagged
@@ -539,14 +540,25 @@ MonoBehaviour:
   videoPlayerController: {fileID: 2143818887}
   spaghetTarget: {fileID: 365973492}
   bowlTracking: {fileID: 1377745765}
+  audioManager: {fileID: 1608543126}
   isGameOver: 0
   handsSlapped: 0
+  angleSpawnBuffer: 30
+  handSpawnsPerSec: 0.5
+  handSpawnsIncreasePerSec: 0.052
+  handSpawnsPerSecLimit: 3.3
   handEnterSpeed: 3
   handLeaveSpeed: 15
   handSpeedIncreasePerSec: 0.12
-  handSpeedLimit: 13.4
-  handEnterSpeedWithIncrease: 0
+  handSpeedLimit: 11
   handSpawnDistancePad: 4
+  handSlapSounds:
+  - {fileID: 8300000, guid: 7424085cd31f20f46b706226ed444c50, type: 3}
+  - {fileID: 8300000, guid: d98b7fd416864ea428438a3bdb5335bf, type: 3}
+  currentHandSlapSound: 0
+  likelyhoodOfSwitchingSlapSound: 0.8
+  handSlapSoundPitchMaxChange: 0.1
+  randomSlapPitchBias: 0.7
 --- !u!114 &1608543125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,6 +571,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameScript: {fileID: 1608543124}
+--- !u!114 &1608543126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1608543122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18df936ba1a6ef54e869074c8938e155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSourceCount: 2
+  nextAudioSourceIndex: 0
 --- !u!1 &1726666660
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,11 @@ public class HandController : MonoBehaviour
     public float enterSpeed = 0;
     public float leaveSpeed = 0;
 
+    public GoodAudioManager audioManager;
+    public AudioClip slapSound;
+    public float handSlapSoundPitchMaxChange;
+    public float randomSlapPitchBias;
+
     bool isHandThatTouched = false;
     public Vector3 deltaFromBowlTrackingOnGameOver;
     Vector3 initialScale;
@@ -78,6 +83,9 @@ public class HandController : MonoBehaviour
         if (!isHandLeaving)
         {
             ++gameScript.handsSlapped;
+            float randomPitch = 1f + (Random.value - (1f - randomSlapPitchBias)) * handSlapSoundPitchMaxChange;
+            Debug.LogFormat("Random pitch: " + randomPitch);
+            audioManager.PlayOneShot(slapSound, randomPitch);
             StartCoroutine(HandLeaveSequence());
         }
     }
