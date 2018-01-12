@@ -10,6 +10,7 @@ public class GameScript : MonoBehaviour
     public Transform bowlTracking;
     public GoodAudioManager audioManager;
     public HandSpawner handSpawner;
+    public MainMenuController mainMenu;
 
     [Header("Game Config / Info")]
     public bool isGameOver = false;
@@ -20,6 +21,7 @@ public class GameScript : MonoBehaviour
     public float handSpawnsIncreasePerSec = 1f;
     public float handSpawnsPerSecLimit = 5f;
     float handSpawnsPerSecWithIncrease;
+    public float mainMenuFadeOutSec = 1f;
 
     [Header("General Audio")]
     public AudioClip spaghetSquishSound;
@@ -43,11 +45,21 @@ public class GameScript : MonoBehaviour
     [Range(0f, 1f), Tooltip("0 is all lower pitches, 1 is all higher pitches")]
     public float randomSlapPitchBias = 0.5f;
 
-    void Start()
+    void Awake()
     {
         handEnterSpeedWithIncrease = handEnterSpeed;
         handSpawnsPerSecWithIncrease = handSpawnsPerSec;
         CalculateHandSpawnDistance();
+    }
+
+    public void StartGame()
+    {
+        StartCoroutine(StartGameSequence());
+    }
+
+    IEnumerator StartGameSequence()
+    {
+        yield return mainMenu.FadeOutSequence(mainMenuFadeOutSec);
         StartCoroutine(HandSpawnerLoop());
     }
 
