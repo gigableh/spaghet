@@ -5,11 +5,11 @@ using UnityEngine;
 public class GameScript : MonoBehaviour
 {
     [Header("Dependencies")]
-    public GameObject handPrefab;
     public VideoPlayerController videoPlayerController;
     public Transform spaghetTarget;
     public Transform bowlTracking;
     public GoodAudioManager audioManager;
+    public HandSpawner handSpawner;
 
     [Header("Game Config / Info")]
     public bool isGameOver = false;
@@ -86,14 +86,18 @@ public class GameScript : MonoBehaviour
 
     void SpawnRandomHand()
     {
-        var handGob = Instantiate(handPrefab, transform);
+        var hc = handSpawner.GetHand();
+        if (hc == null)
+        {
+            Debug.LogWarning("GameScript:: Could not spawn random hand, pool returned null.");
+            return;
+        }
+
         float halfCompressedAngleRange = 180f - angleSpawnBuffer;
         float fullCompressedAngleRange = halfCompressedAngleRange * 2f;
         float angle = Random.value * fullCompressedAngleRange - halfCompressedAngleRange;
         angle += Mathf.Sign(angle) * angleSpawnBuffer;
-        handGob.transform.position = ( lastSpawnDirection = Quaternion.AngleAxis(angle, Vector3.forward) * lastSpawnDirection ) * handSpawnHalfDistance;
-
-        var hc = handGob.GetComponent<HandController>();
+        hc.transform.position = ( lastSpawnDirection = Quaternion.AngleAxis(angle, Vector3.forward) * lastSpawnDirection ) * handSpawnHalfDistance;
 
         // Pass a few things to each hand controller.
         hc.spaghetTarget = spaghetTarget;
@@ -113,6 +117,7 @@ public class GameScript : MonoBehaviour
 
         // Also update rotation before the next frame.
         hc.UpdateRotation();
+        hc.Activate();
     }
    
     public void ExecuteGameOverSequence()

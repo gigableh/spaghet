@@ -22,6 +22,9 @@ public class HandController : MonoBehaviour
 
     bool isHandLeaving = false;
 
+    public HandSpawner handSpawner;
+    public bool isHandActive = false;
+
     void Awake()
     {
         initialScale = transform.localScale;
@@ -29,6 +32,8 @@ public class HandController : MonoBehaviour
 
     void Update()
     {
+        if (!isHandActive) return;
+
         if (gameScript.isGameOver)
         {
             if (!isHandThatTouched)
@@ -48,16 +53,10 @@ public class HandController : MonoBehaviour
         }
         else if (spaghetTarget != null && !isHandLeaving)
         {
-            // Update rotation.
-            //Vector3 delta = spaghetTarget.position - transform.position;
-            //Vector3 dir = delta.normalized;
-            //transform.rotation = transform.rotation * Quaternion.FromToRotation(transform.right, dir);
-            //transform.position += dir * (speed * Time.deltaTime);
-
-            // Update position according to curve.
-            transform.position = transform.position + transform.right * (enterSpeed * Time.deltaTime);
+            // Update position
             // Note: rotation should already be set by GameScript so the +X axis should point
             // toward the spaghet.
+            transform.position = transform.position + transform.right * (enterSpeed * Time.deltaTime);
         }
     }
 
@@ -97,8 +96,7 @@ public class HandController : MonoBehaviour
             transform.position = transform.position - transform.right * (leaveSpeed * Time.deltaTime);
             yield return null;
         }
-
-        Destroy(gameObject);
+        ReturnToPool();
     }
 
     bool IsHandOutsideOfCameraView()
@@ -119,5 +117,24 @@ public class HandController : MonoBehaviour
         // Use the info to determine if hand is outside the camera's view.
         return ( Mathf.Abs(camToHandDisp.y) > camHalfSizeY + bufferUnits ) ||
             ( Mathf.Abs(camToHandDisp.x) > camHalfSizeX + bufferUnits );
+    }
+
+    public void Activate()
+    {
+        isHandActive = true;
+        gameObject.SetActive(true);
+    }
+
+    public void ReturnToPool()
+    {
+        gameObject.SetActive(false);
+        isHandActive = false;
+        ResetState();
+    }
+
+    void ResetState()
+    {
+        isHandThatTouched = false;
+        isHandLeaving = false;
     }
 }
