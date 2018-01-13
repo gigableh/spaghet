@@ -46,4 +46,9 @@ public class VideoPlayerController : MonoBehaviour
         vp.frame = 0;
         vp.Prepare();
     }
+
+    public bool isPlaying()
+    {
+        return vp.isPlaying;
+    }
 }

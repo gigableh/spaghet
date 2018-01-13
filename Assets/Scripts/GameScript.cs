@@ -11,9 +11,12 @@ public class GameScript : MonoBehaviour
     public GoodAudioManager audioManager;
     public HandSpawner handSpawner;
     public MainMenuController mainMenu;
+    public GameOverMenuController gameOverMenu;
 
     [Header("Game Config / Info")]
+    [HideInInspector]
     public bool isGameOver = false;
+    [HideInInspector]
     public int handsSlapped = 0;
     [Range(0f, 170f)]
     public float angleSpawnBuffer = 30f;
@@ -22,6 +25,8 @@ public class GameScript : MonoBehaviour
     public float handSpawnsPerSecLimit = 5f;
     float handSpawnsPerSecWithIncrease;
     public float mainMenuFadeOutSec = 1f;
+    public float waitSecAfterVideo = 0.3f;
+    WaitForSeconds wfsAfterVideo;
 
     [Header("General Audio")]
     public AudioClip spaghetSquishSound;
@@ -49,6 +54,7 @@ public class GameScript : MonoBehaviour
     {
         handEnterSpeedWithIncrease = handEnterSpeed;
         handSpawnsPerSecWithIncrease = handSpawnsPerSec;
+        wfsAfterVideo = new WaitForSeconds(waitSecAfterVideo);
         CalculateHandSpawnDistance();
     }
 
@@ -144,5 +150,13 @@ public class GameScript : MonoBehaviour
         AudioSource aus = audioManager.PlayOneShot(spaghetSquishSound);
         while (aus.isPlaying) yield return null;
         videoPlayerController.Play();
+        while (videoPlayerController.isPlaying()) yield return null;
+        yield return wfsAfterVideo;
+        gameOverMenu.ExecuteFadeIn(handsSlapped);
+    }
+
+    public void RestartGame()
+    {
+        Debug.LogFormat("Restart Game Todo");
     }
 }
