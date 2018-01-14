@@ -19,11 +19,6 @@ public class VideoPlayerController : MonoBehaviour
         vp.Prepare();
     }
 
-    void Start()
-    {
-        vp.Prepare();
-    }
-
     [ContextMenu("Play")]
     public void Play()
     {
@@ -38,17 +33,22 @@ public class VideoPlayerController : MonoBehaviour
         background.SetActive(false);
     }
 
-    [ContextMenu("Stop")]
-    public void Stop()
-    {
-        background.SetActive(true);
-        vp.Stop();
-        vp.frame = 0;
-        vp.Prepare();
-    }
-
-    public bool isPlaying()
+    public bool IsPlaying()
     {
         return vp.isPlaying;
+    }
+
+    public void Reset()
+    {
+        background.SetActive(true);
+        animator.Rebind();
+        vp.Stop();
+        StartCoroutine(DelayedResetActions());
+    }
+
+    IEnumerator DelayedResetActions()
+    {
+        yield return null;
+        vp.Prepare();
     }
 }

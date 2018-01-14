@@ -35,4 +35,15 @@ public class HandSpawner : MonoBehaviour
         }
         return null;
     }
+
+    public void ResetAll()
+    {
+        for (int i = 0; i < poolSize; ++i)
+        {
+            if (hands[i].isHandActive)
+            {
+                hands[i].Reset();
+            }
+        }
+    }
 }

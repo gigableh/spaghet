@@ -139,7 +139,6 @@ public class GameScript : MonoBehaviour
    
     public void ExecuteGameOverSequence()
     {
-        Debug.Log("Game is over!");
         isGameOver = true;
         roundTime = Time.time - roundTime;
         StartCoroutine(GameOverSequence());
@@ -150,12 +149,19 @@ public class GameScript : MonoBehaviour
         AudioSource aus = audioManager.PlayOneShot(spaghetSquishSound);
         while (aus.isPlaying) yield return null;
         videoPlayerController.Play();
-        while (videoPlayerController.isPlaying()) yield return null;
+        while (videoPlayerController.IsPlaying()) yield return null;
         gameOverMenu.ExecuteFadeIn(handsSlapped, roundTime);
     }
 
     public void RestartGame()
     {
-        Debug.LogFormat("Restart Game Todo");
+        gameOverMenu.ExecuteFadeOut();
+        videoPlayerController.Reset();
+        handSpawner.ResetAll();
+        handsSlapped = 0;
+        handEnterSpeedWithIncrease = handEnterSpeed;
+        handSpawnsPerSecWithIncrease = handSpawnsPerSec;
+        isGameOver = false;
+        StartCoroutine(HandSpawnerLoop());
     }
 }

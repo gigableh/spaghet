@@ -96,7 +96,7 @@ public class HandController : MonoBehaviour
             transform.position = transform.position - transform.right * (leaveSpeed * Time.deltaTime);
             yield return null;
         }
-        ReturnToPool();
+        Reset();
     }
 
     bool IsHandOutsideOfCameraView()
@@ -125,16 +125,12 @@ public class HandController : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void ReturnToPool()
+    public void Reset()
     {
         gameObject.SetActive(false);
         isHandActive = false;
-        ResetState();
-    }
-
-    void ResetState()
-    {
         isHandThatTouched = false;
         isHandLeaving = false;
+        transform.localScale = initialScale;
     }
 }
