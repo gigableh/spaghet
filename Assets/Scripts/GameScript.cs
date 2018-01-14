@@ -25,8 +25,7 @@ public class GameScript : MonoBehaviour
     public float handSpawnsPerSecLimit = 5f;
     float handSpawnsPerSecWithIncrease;
     public float mainMenuFadeOutSec = 1f;
-    public float waitSecAfterVideo = 0.3f;
-    WaitForSeconds wfsAfterVideo;
+    float roundTime; // First set with start time, then on game over has round duration.
 
     [Header("General Audio")]
     public AudioClip spaghetSquishSound;
@@ -54,7 +53,6 @@ public class GameScript : MonoBehaviour
     {
         handEnterSpeedWithIncrease = handEnterSpeed;
         handSpawnsPerSecWithIncrease = handSpawnsPerSec;
-        wfsAfterVideo = new WaitForSeconds(waitSecAfterVideo);
         CalculateHandSpawnDistance();
     }
 
@@ -86,6 +84,7 @@ public class GameScript : MonoBehaviour
 
     IEnumerator HandSpawnerLoop()
     {
+        roundTime = Time.time;
         while (!isGameOver)
         {
             float startTime = Time.time;
@@ -142,6 +141,7 @@ public class GameScript : MonoBehaviour
     {
         Debug.Log("Game is over!");
         isGameOver = true;
+        roundTime = Time.time - roundTime;
         StartCoroutine(GameOverSequence());
     }
 
@@ -151,8 +151,7 @@ public class GameScript : MonoBehaviour
         while (aus.isPlaying) yield return null;
         videoPlayerController.Play();
         while (videoPlayerController.isPlaying()) yield return null;
-        yield return wfsAfterVideo;
-        gameOverMenu.ExecuteFadeIn(handsSlapped);
+        gameOverMenu.ExecuteFadeIn(handsSlapped, roundTime);
     }
 
     public void RestartGame()

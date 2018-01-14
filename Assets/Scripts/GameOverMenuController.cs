@@ -9,10 +9,10 @@ public class GameOverMenuController : MonoBehaviour
     [Header("Dependencies")]
     public GameObject panel;
     public TextButton playAgainButton;
-
-    public TMP_Text gameOverText;
-    public TMP_Text timesSpaghetText;
     public TMP_Text slapCountText;
+    public TMP_Text survivalTimeText;
+    public TMP_Text[] textObjects;
+
     TMP_Text buttonText;
     Image panelImage;
 
@@ -20,18 +20,14 @@ public class GameOverMenuController : MonoBehaviour
     public float fadeDurationSec = 0.8f;
 
     // Moving color values.
-    Color gameOverTextColor;
-    Color timesSpaghetTextColor;
-    Color slapCountTextColor;
+    Color[] textObjectColors;
     Color buttonTextColor;
     Color panelImageColor;
 
     // Initial alpha values.
-    float iaGameOverText;
-    float iaTimesSpaghetText;
-    float iaSlapCountText;
-    float iaButtonText;
-    float iaPanelImage;
+    float[] textObjectIAs;
+    float buttonTextIA;
+    float panelImageIA;
 
     void Awake()
     {
@@ -43,44 +39,49 @@ public class GameOverMenuController : MonoBehaviour
 
     void InitGlobalColorVariables()
     {
-        gameOverTextColor = gameOverText.color;
-        timesSpaghetTextColor = timesSpaghetText.color;
-        slapCountTextColor = slapCountText.color;
+        // Initialize color vars and IAs for text objects.
+        textObjectColors = new Color[textObjects.Length];
+        textObjectIAs = new float[textObjects.Length];
+        for (int i = 0; i < textObjects.Length; ++i)
+        {
+            textObjectColors[i] = textObjects[i].color;
+            textObjectIAs[i] = textObjectColors[i].a;
+        }
+
+        // Initialize color vars and IAs for other unique objects.
         buttonTextColor = buttonText.color;
         panelImageColor = panelImage.color;
-
-        iaGameOverText = gameOverTextColor.a;
-        iaTimesSpaghetText = timesSpaghetTextColor.a;
-        iaSlapCountText = slapCountTextColor.a;
-        iaButtonText = buttonTextColor.a;
-        iaPanelImage = panelImageColor.a;
+        buttonTextIA = buttonTextColor.a;
+        panelImageIA = panelImageColor.a;
     }
 
     void SetAlphaValueStrengths(float ratio)
     {
-        gameOverTextColor.a = ratio * iaGameOverText;
-        timesSpaghetTextColor.a = ratio * iaTimesSpaghetText;
-        slapCountTextColor.a = ratio * iaSlapCountText;
-        buttonTextColor.a = ratio * iaButtonText;
-        panelImageColor.a = ratio * iaPanelImage;
+        // Calculate and set colors for text objects.
+        for (int i = 0; i < textObjects.Length; ++i)
+        {
+            textObjectColors[i].a = textObjectIAs[i] * ratio;
+            textObjects[i].color = textObjectColors[i];
+        }
 
-        gameOverText.color = gameOverTextColor;
-        timesSpaghetText.color = timesSpaghetTextColor;
-        slapCountText.color = slapCountTextColor;
+        // Calculate and set colors for other unique objects.
+        buttonTextColor.a = buttonTextIA * ratio;
+        panelImageColor.a = panelImageIA * ratio;
         buttonText.color = buttonTextColor;
         panelImage.color = panelImageColor;
     }
 
     [ContextMenu("Fade In")]
-    public void ExecuteFadeIn(int slapCount)
+    public void ExecuteFadeIn(int slapCount, float timeSurvived)
     {
-        StartCoroutine(FadeIn(slapCount));
+        StartCoroutine(FadeIn(slapCount, timeSurvived));
     }
 
-    public IEnumerator FadeIn(int slapCount)
+    public IEnumerator FadeIn(int slapCount, float timeSurvived)
     {
         playAgainButton.SetInteractive(false);
         slapCountText.text = slapCount.ToString();
+        survivalTimeText.text = ((int)timeSurvived).ToString();
 
         float startTime = Time.time;
         float elapsedTime = 0f;

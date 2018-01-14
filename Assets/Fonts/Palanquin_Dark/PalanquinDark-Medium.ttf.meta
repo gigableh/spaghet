@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 3aaf4dae8c37f8b478f2e612f1050881
+timeCreated: 1515908254
+licenseType: Pro
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Palanquin Dark
+  fontNames:
+  - Palanquin Dark
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
