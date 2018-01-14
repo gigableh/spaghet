@@ -7,6 +7,7 @@ public class GoodAudioManager : MonoBehaviour
     public int audioSourceCount = 2;
     AudioSource[] audioSources;
     public int nextAudioSourceIndex = 0;
+    public float globalVolume = 0.8f;
 
     void Awake()
     {
@@ -15,6 +16,7 @@ public class GoodAudioManager : MonoBehaviour
         {
             audioSources[i] = gameObject.AddComponent<AudioSource>();
             audioSources[i].playOnAwake = false;
+            audioSources[i].volume = globalVolume;
         }
     }
 

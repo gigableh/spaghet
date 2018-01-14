@@ -7,15 +7,33 @@ public class VideoPlayerController : MonoBehaviour
 {
     public GameObject background;
     public Animator animator;
+    public string videoName;
+    public GameObject videoPlayerPrefab;
+    GameObject vpGob;
     VideoPlayer vp;
 
     void Awake()
     {
-        vp = GetComponent<VideoPlayer>();
+        SpawnVideoPlayer();
     }
 
-    void OnEnable()
+    void RespawnVideoPlayer()
     {
+        if (vpGob != null) Destroy(vpGob);
+        SpawnVideoPlayer();
+    }
+
+    void SpawnVideoPlayer()
+    {
+        vpGob = Instantiate(videoPlayerPrefab, transform);
+        vp = vpGob.GetComponent<VideoPlayer>();
+        ConfigureVideoPlayer();
+    }
+
+    void ConfigureVideoPlayer()
+    {
+        vp.targetCamera = Camera.main;
+        vp.url = Application.streamingAssetsPath + "/" + videoName + ".mp4";
         vp.Prepare();
     }
 
@@ -35,6 +53,7 @@ public class VideoPlayerController : MonoBehaviour
 
     public bool IsPlaying()
     {
+        if (vp == null) return false;
         return vp.isPlaying;
     }
 
@@ -42,13 +61,12 @@ public class VideoPlayerController : MonoBehaviour
     {
         background.SetActive(true);
         animator.Rebind();
-        vp.Stop();
-        StartCoroutine(DelayedResetActions());
+        RespawnVideoPlayer();
+        //StartCoroutine(DelayedResetActions());
     }
 
     IEnumerator DelayedResetActions()
     {
         yield return null;
-        vp.Prepare();
     }
 }

@@ -58,12 +58,7 @@ public class GameScript : MonoBehaviour
 
     public void StartGame()
     {
-        StartCoroutine(StartGameSequence());
-    }
-
-    IEnumerator StartGameSequence()
-    {
-        yield return mainMenu.FadeOutSequence(mainMenuFadeOutSec);
+        StartCoroutine(mainMenu.FadeOutSequence(mainMenuFadeOutSec));
         StartCoroutine(HandSpawnerLoop());
     }
 

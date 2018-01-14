@@ -1766,12 +1766,12 @@ MonoBehaviour:
   isGameOver: 0
   handsSlapped: 0
   angleSpawnBuffer: 30
-  handSpawnsPerSec: 0.5
+  handSpawnsPerSec: 1
   handSpawnsIncreasePerSec: 0.05
   handSpawnsPerSecLimit: 4
   mainMenuFadeOutSec: 2
   spaghetSquishSound: {fileID: 8300000, guid: e2acccdc5b120e24297f58f3a0818116, type: 3}
-  handEnterSpeed: 3
+  handEnterSpeed: 4
   handLeaveSpeed: 15
   handSpeedIncreasePerSec: 0.05
   handSpeedLimit: 6
@@ -1808,6 +1808,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSourceCount: 2
   nextAudioSourceIndex: 0
+  globalVolume: 0.25
 --- !u!114 &1608543127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2799,49 +2800,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2143818885}
-  - component: {fileID: 2143818884}
-  - component: {fileID: 2143818886}
   - component: {fileID: 2143818887}
   m_Layer: 0
-  m_Name: Video
+  m_Name: Video Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!328 &2143818884
-VideoPlayer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2143818883}
-  m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 40860471c7c4ba64b9a1bf4f7a9ec380, type: 3}
-  m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
-  m_TargetCamera: {fileID: 1726666663}
-  m_TargetTexture: {fileID: 0}
-  m_TimeReference: 0
-  m_TargetMaterialRenderer: {fileID: 0}
-  m_TargetMaterialProperty: _MainTex
-  m_RenderMode: 0
-  m_AspectRatio: 4
-  m_DataSource: 0
-  m_PlaybackSpeed: 1
-  m_AudioOutputMode: 1
-  m_TargetAudioSources:
-  - {fileID: 2143818886}
-  m_DirectAudioVolumes:
-  - 1
-  m_Url: 
-  m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 00
-  m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 0
-  m_SkipOnDrop: 1
-  m_Looping: 0
-  m_WaitForFirstFrame: 1
-  m_FrameReadyEventEnabled: 0
 --- !u!4 &2143818885
 Transform:
   m_ObjectHideFlags: 0
@@ -2855,87 +2821,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &2143818886
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2143818883}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243232472712217296, guid: fdafcac0e6766a6499c3ed59da708509,
-    type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
 --- !u!114 &2143818887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2949,3 +2834,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: {fileID: 1324182553}
   animator: {fileID: 1377745764}
+  videoName: SpaghetForGameLouder
+  videoPlayerPrefab: {fileID: 1106712555814294, guid: 0f8c3c54ebf3e454183ede0cfcd33fd1,
+    type: 2}
